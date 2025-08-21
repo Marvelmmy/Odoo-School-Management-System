@@ -5,7 +5,7 @@ import json
 # List of teachers restAPI
 class GuruAPI(http.Controller):
     @http.route('/api/guru', type='http', auth='public', methods=['GET'], csrf=False) # API endpoint
-    def get_teachers(self, **kw): # getting the list of teachers
+    def get_guru(self, **kw): # getting the list of teachers
         try:
             guru_list = request.env['om_school.guru'].sudo().search([])
         except Exception as e:
@@ -31,7 +31,7 @@ class GuruAPI(http.Controller):
 # list of students restAPI
 class MuridAPI(http.Controller):
       @http.route('/api/murid', type='http', auth='public', methods=['GET'], csrf=False) # API endpoint
-      def get_siswa(self, **kw):
+      def get_murif(self, **kw):
             try:
                   murid_list = request.env['om_school.murid'].sudo().search([])
             except Exception as e:
@@ -57,7 +57,7 @@ class MuridAPI(http.Controller):
 # API endpoint to add new students
 class ADDMuridAPI(http.Controller):
       @http.route('/api/murid/add', type='json', auth='public', methods=['POST'], csrf=False)
-      def add_siswa(self, **kwargs):
+      def add_murid(self, **kwargs):
             try: 
                 # accepting data from the JSON request
                 nama = kwargs.get('nama')
