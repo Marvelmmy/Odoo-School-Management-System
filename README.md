@@ -52,10 +52,13 @@ git clone https://github.com/your-username/school-management-system.git
 ## Example of Form View and PDF Printed Reports
   ### teachers form view
   <img width="1919" height="826" alt="image" src="https://github.com/user-attachments/assets/491858f5-84e2-415e-a112-ea53ad595d23" />
+  
   ### students form view
   <img width="1917" height="818" alt="image" src="https://github.com/user-attachments/assets/c2dd7464-c1b5-4d69-8ab8-87cea3ba4638" />
+  
   ### teacher student PDF report
   <img width="1185" height="648" alt="image" src="https://github.com/user-attachments/assets/3e4651df-9d56-4900-98b9-277fc93130b2" />
+  
   ### PDF print invoice paid
   <img width="1108" height="722" alt="image" src="https://github.com/user-attachments/assets/45fa6ea7-898e-40e8-83f7-aeca9d2e1474" />
 
