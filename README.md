@@ -35,3 +35,4 @@ To learn the software, we recommend the <a href="https://www.odoo.com/slides">Od
 # Odoo-School-Management-System-Project
 -
 >>>>>>> fc22c2cb7c5b2f57afbac78bc709db77a9ca2863
+"# Odoo-School-Management-System" 
