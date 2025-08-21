@@ -36,7 +36,7 @@ class Guru(models.Model):
             if rec.no_telp and not rec.no_telp.isdigit():
                 raise ValidationError(_("Phone number must contain digits only!"))
             
-    # validasi untuk nomor unik supaya tidak ada double di data
+    # validate for unique numbers so there will be no duplicates
     @api.constrains('no_telp')
     def unique_no_telp(self):
         for rec in self:
