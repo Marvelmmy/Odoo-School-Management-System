@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Guru -->
+    <data noupdate="1">
+        <record id="sequence_school_guru" model="ir.sequence">
+            <field name="name">Guru Sequence</field>
+            <field name="code">school.guru</field>
+            <field name="prefix">GR</field>
+            <field name="padding">5</field>
+        </record>
+    </data>
+
+    <!-- Murid -->
+    <data noupdate="1">
+        <record id="sequence_school_murid" model="ir.sequence">
+            <field name="name">Murid Sequence</field>
+            <field name="code">school.murid</field>
+            <field name="prefix">MR</field>
+            <field name="padding">5</field>
+        </record>
+    </data>
+
+        <!-- Payment -->
+    <data noupdate="1">
+        <record id="sequence_school_payment_done" model="ir.sequence">
+            <field name="name">Payment Sequence</field>
+            <field name="code">school.payment_done</field>
+            <field name="prefix">PD</field>
+            <field name="padding">5</field>
+        </record>
+    </data>
+</odoo>

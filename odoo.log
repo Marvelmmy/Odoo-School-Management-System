@@ -1,0 +1,7 @@
+2025-08-14 06:10:51,797 13920 INFO ? odoo: Odoo version 16.0-20250814 
+2025-08-14 06:10:51,799 13920 INFO ? odoo: Using configuration file at C:\Users\Infinix\Downloads\server\odoo.conf 
+2025-08-14 06:10:51,799 13920 INFO ? odoo: addons paths: ['C:\\Users\\Infinix\\Downloads\\server\\odoo\\addons', 'c:\\users\\infinix\\downloads\\sessions\\addons\\16.0', 'c:\\users\\infinix\\downloads\\server\\odoo\\addons'] 
+2025-08-14 06:10:51,799 13920 INFO ? odoo: database: openpg@localhost:5432 
+2025-08-14 06:10:55,605 13920 INFO ? odoo.addons.base.models.ir_actions_report: Will use the Wkhtmltopdf binary at C:\Users\Infinix\Downloads\thirdparty\wkhtmltopdf.exe 
+2025-08-14 06:10:56,862 13920 INFO ? odoo.service.server: Initiating shutdown 
+2025-08-14 06:10:56,862 13920 INFO ? odoo.service.server: Hit CTRL-C again or send a second signal to force the shutdown. 

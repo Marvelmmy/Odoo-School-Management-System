@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Report Template -->
+    <template id="report_guru_murid" name="Teacher and Students Report">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <t t-foreach="docs" t-as="guru">
+                        <div class="text-center mb-4">
+                            <h2><strong>TEACHER REPORT</strong></h2>
+                            <hr/>
+                        </div>
+
+                        <!-- Teacher Information -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h4>Teacher Information</h4>
+                                <hr/>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <p><strong>Name:</strong> <span t-field="guru.nama"/></p>
+                                        <p><strong>Reference:</strong> <span t-field="guru.ref"/></p>
+                                        <p><strong>Phone:</strong> <span t-field="guru.no_telp"/></p>
+                                    </div>
+                                    <div class="col-6">
+                                        <p><strong>Address:</strong> <span t-field="guru.alamat"/></p>
+                                        <p><strong>Homeroom Classes:</strong> 
+                                            <t t-if="guru.kelas_wali_id">
+                                                <span t-foreach="guru.kelas_wali_id" t-as="kelas">
+                                                    <span t-field="kelas.name"/>
+                                                    <t t-if="not kelas_last">, </t>
+                                                </span>
+                                            </t>
+                                            <t t-else="">None</t>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Students List -->
+                        <t t-if="guru.kelas_wali_id">
+                            <t t-foreach="guru.kelas_wali_id" t-as="kelas">
+                                <t t-if="kelas.murid_ids">
+                                    <div class="row mb-4">
+                                        <div class="col-12">
+                                            <h4>Students in Class: <span t-field="kelas.name"/></h4>
+                                            <hr/>
+                                            <table class="table table-sm table-bordered">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>Student Name</th>
+                                                        <th>Student ID</th>
+                                                        <th>Phone</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr t-foreach="kelas.murid_ids" t-as="murid">
+                                                        <td><span t-esc="murid_index + 1"/></td>
+                                                        <td><span t-field="murid.nama"/></td>
+                                                        <td><span t-field="murid.ref"/></td>
+                                                        <td><span t-field="murid.no_telp"/></td>
+                                                        <td>
+                                                            <span t-if="murid.is_active" class="badge badge-success">Active</span>
+                                                            <span t-else="" class="badge badge-secondary">Inactive</span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </t>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <div class="row mb-4">
+                                <div class="col-12 text-center">
+                                    <p><em>This teacher is not assigned as homeroom teacher for any class.</em></p>
+                                </div>
+                            </div>
+                        </t>
+
+                        <!-- Page Break -->
+                        <div t-if="not guru_last" class="page-break"/>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Report Action -->
+    <record id="action_report_guru_murid" model="ir.actions.report">
+        <field name="name">Teacher &amp; Students Report</field>
+        <field name="model">om_school.guru</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">om_school.report_guru_murid</field>
+        <field name="report_file">om_school.report_guru_murid</field>
+        <field name="binding_model_id" ref="model_om_school_guru"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Guru Action -->
+    <record id="action_school_guru" model="ir.actions.act_window">
+        <field name="name">Teachers</field>
+        <field name="res_model">om_school.guru</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!--- toggle student status -->
+    <record id="action_open_students" model="ir.actions.act_window">
+        <field name="name">Students</field>
+        <field name="res_model">om_school.murid</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('kelas_id.guru_id', '=', active_id)]</field>     
+    </record>
+
+
+    <!-- menu -->
+    <menuitem id="menu_guru"
+              name="Teachers"
+              parent="menu_school_operations_guru"
+              action="action_school_guru"
+              sequence="10"/>
+
+    <!-- Guru Form View -->
+    <record id="view_guru_form" model="ir.ui.view">
+        <field name="name">guru.form</field>
+        <field name="model">om_school.guru</field>
+        <field name="arch" type="xml">
+            <form string="Teacher">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="ref" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="nama"/>
+                            <field name="alamat"/>
+                        </group>
+                        <group>
+                            <field name="no_telp"/>
+                            <field name="kelas_wali_id"/>
+                            <field name="jumlah_siswa"/>
+                        </group>
+                    </group>
+                </sheet>
+
+                <!-- Chatter -->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids" options="{'post_refresh': 'recipients'}"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Guru Tree View -->
+    <record id="view_guru_tree" model="ir.ui.view">
+        <field name="name">guru.tree</field>
+        <field name="model">om_school.guru</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="ref"/>
+                <field name="nama"/>
+                <field name="alamat"/>
+                <field name="no_telp"/>
+                <field name="jumlah_siswa"/>
+            </tree>
+        </field>
+    </record>
+
+</odoo>

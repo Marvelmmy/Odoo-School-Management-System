@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!-- Murid Views and Actions -->
+    <!-- Murid Action -->
+    <record id="action_school_murid" model="ir.actions.act_window">
+        <field name="name">Murid</field>
+        <field name="res_model">om_school.murid</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- menu -->
+     <menuitem id="menu_murid"
+               name="Murid"
+               parent="menu_school_operations_murid"
+                action="action_school_murid"
+               sequence="10"/>
+
+    <!-- Murid Form View -->
+    <record id="view_murid_form" model="ir.ui.view">
+    <field name="name">murid.form</field>
+    <field name="model">om_school.murid</field>
+    <field name="arch" type="xml">
+        <form string="Murid">
+            <sheet>
+                 <div class="oe_title">
+                    <h1>
+                        <field name="ref" readonly="1"/>
+                    </h1>
+                 </div>
+                <header>
+                    <button name="action_print_receipt"
+                        string="Print Receipt"
+                        type="object"
+                        class="btn-primary"/>
+                </header> 
+                <group>
+                    <field name="nama"/>
+                    <field name="kelas_id" options="{'no_open': True, 'no_create': True}"/>
+                    <field name="alamat"/>
+                    <field name="no_telp"/>
+                    <field name="is_active"/>
+                    <field name="bills" options="{'no_open': True, 'no_create': True}"/>
+                </group>
+            </sheet>
+
+            <!-- Chatter -->
+            <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                    <field name="message_ids" options="{'post_refresh': 'recipients'}"/>
+            </div>
+        </form>
+    </field>
+</record>
+
+
+    <!-- Murid Tree View -->
+    <record id="view_murid_tree" model="ir.ui.view">
+        <field name="name">murid.tree</field>
+        <field name="model">om_school.murid</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="ref"/>
+                <field name="nama"/>
+                <field name="kelas_id"/>
+                <field name="alamat"/>
+                <field name="no_telp"/>
+            </tree>
+        </field>
+    </record>
+
+<!-- Bills Views and Actions -->
+
+    <!-- Report Action for Payment Receipt -->
+    <report
+        id="action_report_murid_payment_done"
+        model="om_school.bills"
+        string="Payment Receipt"
+        report_type="qweb-pdf"
+        name="om_school.report_murid_payment_done"
+        file="om_school.report_murid_payment_done"
+        print_report_name="'Payment Receipt - %s' % (object.nama)"/>
+
+    <!-- Bills Action -->
+    <record id="action_school_bills" model="ir.actions.act_window">
+        <field name="name">Monthly Bills</field>
+        <field name="res_model">om_school.bills</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Bills Form View -->
+    <record id="view_bills_form" model="ir.ui.view">
+        <field name="name">bills.form</field>
+        <field name="model">om_school.bills</field>
+        <field name="arch" type="xml">
+            <form string="Monthly Bill">
+                <header>
+                    <button name="%(action_report_murid_payment_done)d" 
+                        string="Print Receipt" 
+                        type="action" 
+                        states="paid" 
+                        class="btn-primary"/>
+                    <button name="action_confirm" string="Confirm" type="object"/>
+                    <button name="action_pay" string="Mark as Paid" type="object"/>
+                    <button name="action_cancel" string="Cancel" type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,open,paid"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="nama"/>
+                            <field name="murid_id"/>
+                            <field name="amount"/>
+                        </group>
+                        <group>
+                            <field name="due_date"/>
+                            <field name="payment_date" attrs="{'invisible': [('state', '!=', 'paid')]}"/>
+                            <field name="create_date"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+                <!-- Chatter -->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids" options="{'post_refresh': 'recipients'}"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Bills Tree View -->
+    <record id="view_bills_tree" model="ir.ui.view">
+        <field name="name">bills.tree</field>
+        <field name="model">om_school.bills</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="nama"/>
+                <field name="murid_id"/>
+                <field name="amount"/>
+                <field name="due_date"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- monthly vill generator cron -->
+    <record id="cron_generate_monthly_bills" model="ir.cron">
+        <field name="name">Generate Monthhly Bills Murid</field>
+        <field name="active" eval="True"/>
+        <field name="priority">5</field>
+        <field name="interval_type">months</field>
+        <field name="numbercall">1</field>
+        <field name="nextcall" eval="(datetime.now().replace(day=1, hour=9, minute=0, second=0, microsecond=0)).strftime('%Y-%m-%d %H:%M:%S')"/>
+        <field name="model_id" ref="model_om_school_murid"/>
+        <field name="state">code</field>
+        <field name="code">model.generate_monthly_bills</field>
+        <field name="user_id" ref="base.user_admin"/>
+    </record>
+
+    <!-- Scheduler for monthly fee reminders -->
+    <record id="cron_send_bill_reminder" model="ir.cron">
+        <field name="name">Send Daily Bill Reminders</field>
+        <field name="active" eval="True"/>
+        <field name="priority">10</field>
+        <field name="interval_type">months</field>
+        <field name="numbercall">-1</field>
+        <field name="nextcall" eval="(datetime.now().replace(day=1, hour=9, minute=0, second=0, microsecond=0)).strftime('%Y-%m-%d %H:%M:%S')"/>
+        <field name="model_id" ref="model_om_school_murid"/>
+        <field name="state">code</field>
+        <field name="code">model.send_monthly_bills()</field>
+        <field name="user_id" ref="base.user_admin"/>
+    </record>
+
+    <!-- Manual Action to generate bills -->
+    <record id="action_generate_monthly_bills" model="ir.actions.server">
+        <field name="name">Generate Monthly Bills</field>
+        <field name="model_id" ref="model_om_school_murid"/>
+        <field name="binding_model_id" ref="model_om_school_murid"/>
+        <field name="state">code</field>
+        <field name="code">records.generate_monthly_bills()</field>
+    </record>
+
+<!-- Payment Confirmation Receipt Template -->
+<template id="report_murid_payment_done">
+    <t t-call="web.html_container">
+        <t t-call="web.external_layout">
+            <div class="page">
+                <!-- Get the first document for header info -->
+                <t t-set="main_doc" t-value="docs[0]"/>
+                
+                <!-- HEADER -->
+                <div class="text-center">
+                    <h3><strong>SMA DIAN HARAPAN LIPPO VILLAGE</strong></h3>
+                    <p>Jalan Mentawai No. 201, Taman Imam Bonjol, Lippo Village, Tangerang, Banten 15811</p>
+                    <p>Telp. 0271 - 494 787 | Web: www.smadianharapanlippo.com</p>
+                    <h4><strong>BUKTI PEMBAYARAN SISWA</strong></h4>
+                    <hr/>
+                </div>
+
+                <!-- INFO -->
+                <table class="table table-sm">
+                    <tr>
+                        <td><strong>No Trans:</strong> <span t-esc="'/'.join([str(doc.id) for doc in docs])"/></td>
+                        <td><strong>NIS:</strong> <span t-field="main_doc.murid_id.ref"/></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tanggal:</strong> <span t-field="main_doc.payment_date"/></td>
+                        <td><strong>Nama Siswa:</strong> <span t-field="main_doc.murid_id.nama"/></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Jam Cetak:</strong> 
+                            <span t-esc="datetime.datetime.now().strftime('%H:%M:%S')"/>
+                        </td>
+                        <td><strong>Kelas:</strong> <span t-field="main_doc.murid_id.kelas_id.name"/></td>
+                    </tr>
+                </table>
+
+                <!-- PAYMENT TABLE -->
+                <table class="table table-bordered mt-3">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Keterangan Pembayaran</th>
+                            <th class="text-right">Jumlah (Rp)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Initialize total -->
+                        <t t-set="grand_total" t-value="0"/>
+                        
+                        <!-- Loop through all documents/bills -->
+                        <t t-foreach="docs" t-as="doc">
+                            <!-- Add to grand total -->
+                            <t t-set="grand_total" t-value="grand_total + doc.amount"/>
+                            
+                            <tr>
+                                <td><span t-esc="doc_index + 1"/></td>
+                                <td><span t-field="doc.nama"/></td>
+                                <td class="text-right">Rp <span t-esc="'{:,.0f}'.format(doc.amount)"/></td>
+                            </tr>
+                        </t>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="2" class="text-right">Grand Total :</th>
+                            <th class="text-right">Rp <span t-esc="'{:,.0f}'.format(grand_total)"/></th>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <!-- FOOTER -->
+                <p><strong>Terbilang:</strong> <span t-esc="'{:,.0f}'.format(grand_total) + ' rupiah'"/></p>
+                <br/>
+                <div class="text-right">
+                    <p>Tangerang, <span t-field="main_doc.payment_date" t-options="{'widget': 'date'}"/></p>
+                    <p>Yang Menerima,</p>
+                    <br/><br/>
+                    <p><u>___________________</u></p>
+                </div>
+            </div>
+        </t>
+    </t>
+</template>
+</odoo>
