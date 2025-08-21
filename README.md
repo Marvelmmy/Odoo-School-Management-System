@@ -1,17 +1,15 @@
-# Odoo School Management System
+# 🎓 School Management System (Odoo 16)
 
-A custom Odoo module designed to simplify school operations.  
-This system helps manage **students, teachers, classes, and school activities** in one place.
+A simple yet effective School Management module for **Odoo 16**.  
+This module helps manage students, teachers, and classes, while defining their relationships.  
 
-## Features
-- 👩‍🎓 Student management (add, update, assign to classes)
-- 👨‍🏫 Teacher management
-- 🏫 Class and subject scheduling
-- 📊 Reports and analytics
-- 🔐 Role-based access for admins, teachers, and students
+## ✨ Features
+- 👩‍🎓 Manage students  
+- 👨‍🏫 Manage teachers  
+- 🏫 Link students and teachers  
+- 📊 Extendable for more school ERP needs  
 
-## Installation
-1. Clone this repository into your Odoo `addons` folder:
+## 📦 Installation
+1. Clone this repository into your Odoo addons directory:
    ```bash
    git clone https://github.com/Marvelmmy/Odoo-School-Management-System-Project.git
-
