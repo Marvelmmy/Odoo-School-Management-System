@@ -34,7 +34,8 @@ This project includes **database models, API endpoints, PDF reports, automation,
 ---
 
 ## 📂 Project Structure
-<img width="447" height="486" alt="image" src="https://github.com/user-attachments/assets/280c7b34-ccff-42a9-b2e6-77ec073fde8f" />
+<img width="381" height="558" alt="image" src="https://github.com/user-attachments/assets/f4e2b51f-d9c8-48c7-b175-0475eb70a513" />
+
 
 ## ⚙️ Installation
 git clone https://github.com/your-username/school-management-system.git
