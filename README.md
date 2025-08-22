@@ -21,8 +21,9 @@ This project includes **database models, API endpoints, PDF reports, automation,
 - Centralized structure for assignments.
 
 ### 🔌 API Integration (REST with Odoo API)
-- `GET /api/teachers` → Fetch teacher list (test via Postman).
-- `POST /api/students` → Add a new student (test via Postman).
+- `GET /api/guru` → Fetch teacher list (test via Postman).
+- `GET /api/murid` → Fetch teacher list (test via Postman).
+- `POST /api/murid/add` → Add a new student (test via Postman).
 
 ### 📝 Reports & Printouts
 - PDF list of teachers with the students they teach.
