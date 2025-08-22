@@ -43,8 +43,9 @@ git clone https://github.com/your-username/school-management-system.git
 ## 🚀 Usage
 - Navigate to School Management module in Odoo
 - Test APIs using Postman:
-    GET /api/teachers → Fetch teacher list
-    POST /api/students → Add a new student
+    GET /api/guru → Fetch teacher list
+    GET /api/murid → Fetch teacher list
+    POST /api/murid/add → Add a new student
 - Generate reports
     Teacher-Student PDF List
     Invoice Receipt PDF (if invoice is Paid)
